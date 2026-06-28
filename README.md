@@ -1,96 +1,118 @@
 # Monitor-de-Tarefas-TechFlow
-um sistema de gerenciamento de tarefas baseado em metodologias ágeis. Acompanhar o fluxo de trabalho em tempo real, priorizar tarefas críticas e monitorar o desempenho da equipe.
+# Construindo um Projeto Ágil no GitHub: Da Gestão ao Controle de Qualidade
 
+Este projeto foi desenvolvido como parte da atividade da disciplina de Engenharia de Software da UniFECAF.  
+A empresa fictícia **TechFlow Solutions** foi contratada para criar um sistema de gerenciamento de tarefas com foco em práticas ágeis, testes automatizados e qualidade de software.
 
--- Visão Geral --
-Este projeto foi desenvolvido como parte da disciplina de Engenharia de Software da UniFECAF. O objetivo é aplicar metodologias ágeis (Scrum/Kanban) e boas práticas de desenvolvimento para criar um sistema simples de gerenciamento de tarefas.
+---
 
-A empresa fictícia TechFlow Solutions precisa de um sistema que permita organizar atividades, acompanhar progresso e garantir qualidade por meio de testes automatizados.
+##  Funcionalidades Implementadas
 
--- Objetivos do Projeto --
-Criar um sistema funcional de CRUD de tarefas (criar, listar, editar, excluir).
+### Commit 1 — *feat: criar estrutura inicial do projeto*
+- Criação da pasta `src/` e arquivo `app.py`.
+- Classe `Sistema` com estrutura básica.
 
-Implementar login simples para usuários.
+### Commit 2 — *feat: adicionar CRUD de tarefas*
+- Implementação das operações de adicionar, listar, editar e remover tarefas.
 
-Utilizar GitHub Projects para planejar e acompanhar tarefas.
+### Commit 3 — *test: adicionar testes para CRUD*
+- Arquivo `tests/test_app.py` com testes unitários para o CRUD.
 
-Configurar GitHub Actions para rodar testes automatizados.
+### Commit 4 — *test: adicionar testes para login*
+- Arquivo `tests/test_login.py` validando login, logout e bloqueio de CRUD sem login.
 
-Documentar todas as etapas em um README.md e em um relatório teórico.
+### Commit 5 — *refactor: melhorar mensagens de erro*
+- Mensagens de erro mais claras e amigáveis.
+- Validações adicionais: email duplicado, título duplicado de tarefa.
 
-Simular uma mudança de escopo e justificar sua inclusão.
+### Commit 6 — *feat: adicionar prioridade e status às tarefas*
+- Cada tarefa possui prioridade e status (pendente, em andamento, concluída).
 
--- Metodologia Ágil -- 
-Foi escolhido o Kanban como método de gestão visual.
+### Commit 7 — *feat: adicionar filtro de tarefas por status e prioridade*
+- Métodos para filtrar tarefas por status ou prioridade.
 
-Colunas: A Fazer, Em Progresso, Concluído.
+### Commit 8 — *feat: adicionar persistência em arquivo (salvar e carregar tarefas)*
+- Salvamento das tarefas em `tarefas.json`.
+- Carregamento automático das tarefas ao reiniciar o sistema.
 
-Cards: mínimo de 10 tarefas, incluindo documentação, código, testes e mudança de escopo.
+### Commit 9 — *feat: adicionar interface de linha de comando (CLI)*
+- Interação via terminal com comandos como `adicionar`, `listar`, `editar`, `remover`, `salvar`, `carregar`.
 
-Cada tarefa é movida conforme seu progresso.
+### Commit 10 — *test: adicionar testes automatizados para a CLI*
+- Arquivo `tests/test_cli.py` simulando comandos e validando saídas da CLI.
 
--- Estrutura do Projeto --
+### Commit 11 — *feat: adicionar interface gráfica simples (GUI com Tkinter)*
+- Arquivo `src/gui.py` com interface gráfica para login e gerenciamento de tarefas.
+
+### Commit 12 — *test: adicionar testes automatizados para a GUI*
+- Arquivo `tests/test_gui.py` validando login e adicionar tarefas via GUI.
+
+### Commit 13 — *feat: documentação do projeto (README detalhado)*
+- Criação deste README com histórico dos commits e funcionalidades.
+
+---
+
+##  Tecnologias Utilizadas
+- **Python 3.13**
+- **Pytest** para testes automatizados
+- **Tkinter** para GUI
+- **JSON** para persistência de dados
+- **Git/GitHub** para versionamento e colaboração
+
+---
+
+## 📂 Estrutura do Projeto
+TECHFLOW/
+│
+├── src/
+│   ├── app.py        # Lógica principal do sistema
+│   └── gui.py        # Interface gráfica (Tkinter)
+│
+├── tests/
+│   ├── test_app.py   # Testes do CRUD
+│   ├── test_login.py # Testes de login/logout
+│   ├── test_cli.py   # Testes da CLI
+│   └── test_gui.py   # Testes da GUI
+│
+├── tarefas.json      # Persistência das tarefas
+└── README.md         # Documentação do projeto
+
 Código
-/src        -> Código fonte do sistema
-/tests      -> Testes automatizados
-/docs       -> Diagramas UML e documentação extra
-.github/    -> Configuração de workflows (CI/CD)
-README.md   -> Documentação principal
 
--- Como Executar -- 
-Clone o repositório:
-"it clone https://github.com/seuusuario/projeto-agil.git"
+---
 
-Instale dependências:
-"pip install -r requirements.txt"
+##  Como Executar
+1. Clone o repositório:
+   ```bash
+   git clone <url-do-repo>
+   cd TECHFLOW
+Instale as dependências:
 
-Rode o sistema:
-"python src/app.py"
-
+bash
+python -m pip install pytest
 Execute os testes:
-"pytest"
 
+bash
+python -m pytest -v
+Rode a CLI:
 
- -- Gestão de Mudanças --
-Durante o desenvolvimento, foi adicionada a funcionalidade de priorização de tarefas.
+bash
+python src/app.py
+Rode a GUI:
 
-Motivo: necessidade de destacar tarefas críticas para a equipe.
+bash
+python src/gui.py
+ Conclusão
+Este projeto demonstra a aplicação de práticas ágeis, versionamento semântico de commits e integração de testes automatizados em diferentes camadas (CRUD, login, CLI e GUI).
+A documentação garante rastreabilidade das alterações conforme solicitado na atividade.
 
-Impacto: alteração no escopo inicial, registrada no README.md e no Kanban.
+Código
 
+---
 
--- Diagramas UML --
+##  Comandos Git para subir o commit
 
-Casos de Uso:
-Usuário faz login.
-
-Usuário cria, edita, exclui e lista tarefas.
-
-Usuário prioriza tarefas.
-
-Classes:
-
-Usuario: atributos de login.
-
-Tarefa: título, descrição, prioridade.
-
-Sistema: gerencia lista de tarefas e usuários.
-
--- Qualidade e Testes -- 
-Testes automatizados configurados com GitHub Actions.
-
-Workflow roda automaticamente em cada push ou pull request.
-
-Testes garantem que CRUD e login funcionem corretamente.
-
-
--- Conclusão --
-Este projeto demonstra como aplicar Engenharia de Software na prática, unindo:
-
-Planejamento ágil com Kanban.
-
-Desenvolvimento incremental com commits semânticos.
-
-Controle de qualidade com testes automatizados.
-
-Gestão de mudanças documentada e justificada.
+```bash
+git add README.md
+git commit -m "feat: documentação do projeto (README detalhado)"
+git push origin main
