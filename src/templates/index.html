@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>TechFlow - Sistema de Tarefas</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-dark text-light">
+  <div class="container mt-4">
+    <h1 class="text-warning">TechFlow - Sistema de Tarefas</h1>
+
+    <!-- Registro -->
+    {% if not sistema.usuario_logado %}
+    <form method="post" action="/register" class="mb-3">
+      <div class="row g-2">
+        <div class="col"><input type="text" name="nome" class="form-control" placeholder="Nome"></div>
+        <div class="col"><input type="text" name="email" class="form-control" placeholder="Email"></div>
+        <div class="col"><input type="password" name="senha" class="form-control" placeholder="Senha"></div>
+        <div class="col"><button type="submit" class="btn btn-success">Registrar</button></div>
+      </div>
+    </form>
+
+    <!-- Login -->
+    <form method="post" action="/login" class="mb-3">
+      <div class="row g-2">
+        <div class="col"><input type="text" name="email" class="form-control" placeholder="Email"></div>
+        <div class="col"><input type="password" name="senha" class="form-control" placeholder="Senha"></div>
+        <div class="col"><button type="submit" class="btn btn-warning">Entrar</button></div>
+      </div>
+    </form>
+    {% else %}
+    <p>Logado como <strong>{{ sistema.usuario_logado.email }}</strong> 
+       <a href="/logout" class="btn btn-sm btn-outline-light">Sair</a></p>
+    {% endif %}
+
+    <!-- Botão adicionar -->
+    {% if sistema.usuario_logado %}
+    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#novaTarefa">
+      + Adicionar Tarefa
+    </button>
+    {% endif %}
+
+    <!-- Tabela -->
+    <table class="table table-dark table-striped">
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Descrição</th>
+          <th>Prioridade</th>
+          <th>Status</th>
+          <th>Autor</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for t in tarefas %}
+        <tr>
+          <td>{{ t.titulo }}</td>
+          <td>{{ t.descricao }}</td>
+          <td>{{ t.prioridade }}</td>
+          <td>{{ t.status }}</td>
+          <td>{{ t.autor }}</td>
+          <td>
+            <!-- Botão Editar abre modal -->
+            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editarTarefa{{ loop.index }}">
+              Editar
+            </button>
+            <a href="/remover/{{ t.titulo }}" class="btn btn-danger btn-sm">Remover</a>
+          </td>
+        </tr>
+
+        <!-- Modal Editar -->
+        <div class="modal fade" id="editarTarefa{{ loop.index }}" tabindex="-1">
+          <div class="modal-dialog">
+            <form method="post" action="/editar/{{ t.titulo }}" class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Editar Tarefa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body">
+                <input type="text" name="titulo" class="form-control mb-2" value="{{ t.titulo }}">
+                <input type="text" name="descricao" class="form-control mb-2" value="{{ t.descricao }}">
+                <input type="text" name="prioridade" class="form-control mb-2" value="{{ t.prioridade }}">
+                <input type="text" name="status" class="form-control mb-2" value="{{ t.status }}">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal Nova Tarefa -->
+  <div class="modal fade" id="novaTarefa" tabindex="-1">
+    <div class="modal-dialog">
+      <form method="post" action="/tasks" class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Nova Tarefa</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="text" name="titulo" class="form-control mb-2" placeholder="Título">
+          <input type="text" name="descricao" class="form-control mb-2" placeholder="Descrição">
+          <input type="text" name="prioridade" class="form-control mb-2" placeholder="Prioridade">
+          <input type="text" name="status" class="form-control mb-2" placeholder="Status">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
