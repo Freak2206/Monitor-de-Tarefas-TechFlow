@@ -1,4 +1,4 @@
-# Commit: feat: adicionar prioridade e status às tarefas
+# Commit: feat: adicionar filtro de tarefas por status e prioridade
 
 class Usuario:
     def __init__(self, nome, email, senha):
@@ -12,7 +12,7 @@ class Tarefa:
         self.titulo = titulo
         self.descricao = descricao
         self.prioridade = prioridade
-        self.status = status  # novo campo
+        self.status = status
 
     def editar(self, novo_titulo=None, nova_descricao=None, novo_prioridade=None, novo_status=None):
         if novo_titulo:
@@ -78,6 +78,13 @@ class Sistema:
             raise Exception(f"❌ Não foi possível remover: tarefa '{titulo}' não encontrada.")
         self.tarefas = [t for t in self.tarefas if t.titulo != titulo]
 
+    # ---------------- FILTROS ----------------
+    def filtrar_por_status(self, status):
+        return [(t.titulo, t.descricao, t.prioridade, t.status) for t in self.tarefas if t.status == status]
+
+    def filtrar_por_prioridade(self, prioridade):
+        return [(t.titulo, t.descricao, t.prioridade, t.status) for t in self.tarefas if t.prioridade == prioridade]
+
 
 # -----------------------------
 # Exemplo de uso
@@ -91,13 +98,16 @@ if __name__ == "__main__":
 
         sistema.adicionar_tarefa("Estudar UML", "Fazer diagrama de casos de uso", prioridade=2, status="pendente")
         sistema.adicionar_tarefa("Implementar login", "Criar autenticação básica", prioridade=1, status="em andamento")
+        sistema.adicionar_tarefa("Testar CRUD", "Rodar testes unitários", prioridade=3, status="concluída")
 
-        print("\n📌 Lista de tarefas:")
+        print("\n📌 Todas as tarefas:")
         print(sistema.listar_tarefas())
 
-        sistema.editar_tarefa("Estudar UML", novo_status="concluída", novo_prioridade=3)
-        print("\n✏️ Após edição da tarefa:")
-        print(sistema.listar_tarefas())
+        print("\n🔎 Tarefas pendentes:")
+        print(sistema.filtrar_por_status("pendente"))
+
+        print("\n🔎 Tarefas com prioridade 1:")
+        print(sistema.filtrar_por_prioridade(1))
 
     except Exception as e:
         print(str(e))
