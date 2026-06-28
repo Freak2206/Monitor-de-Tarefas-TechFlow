@@ -1,4 +1,4 @@
-# Commit: feat: adicionar persistência em arquivo (salvar e carregar tarefas)
+# Commit: feat: adicionar interface de linha de comando (CLI)
 
 import json
 
@@ -107,28 +107,78 @@ class Sistema:
 
 
 # -----------------------------
-# Exemplo de uso
+# Interface de Linha de Comando (CLI)
 # -----------------------------
 if __name__ == "__main__":
     sistema = Sistema()
+    print("🚀 Bem-vindo ao Gerenciador de Tarefas (CLI)!")
+    print("Digite 'help' para ver os comandos disponíveis.")
 
-    try:
-        sistema.registrar_usuario("Felipe", "felipe@email.com", "1234")
-        sistema.login("felipe@email.com", "1234")
+    while True:
+        comando = input("\n> ").strip().lower()
 
-        sistema.adicionar_tarefa("Estudar UML", "Fazer diagrama de casos de uso", prioridade=2, status="pendente")
-        sistema.adicionar_tarefa("Implementar login", "Criar autenticação básica", prioridade=1, status="em andamento")
+        try:
+            if comando == "help":
+                print("""
+Comandos disponíveis:
+- registrar <nome> <email> <senha>
+- login <email> <senha>
+- logout
+- adicionar <titulo> <descricao> <prioridade> <status>
+- listar
+- editar <titulo> <novo_titulo> <nova_descricao> <nova_prioridade> <novo_status>
+- remover <titulo>
+- salvar
+- carregar
+- sair
+                """)
 
-        print("\n📌 Lista de tarefas antes de salvar:")
-        print(sistema.listar_tarefas())
+            elif comando.startswith("registrar"):
+                _, nome, email, senha = comando.split(" ", 3)
+                sistema.registrar_usuario(nome, email, senha)
+                print("✅ Usuário registrado com sucesso!")
 
-        sistema.salvar_tarefas()
+            elif comando.startswith("login"):
+                _, email, senha = comando.split(" ", 2)
+                sistema.login(email, senha)
+                print("✅ Login realizado com sucesso!")
 
-        # Simula novo sistema carregando tarefas
-        novo_sistema = Sistema()
-        novo_sistema.carregar_tarefas()
-        print("\n📂 Lista de tarefas carregadas do arquivo:")
-        print(novo_sistema.listar_tarefas())
+            elif comando == "logout":
+                sistema.logout()
+                print("✅ Logout realizado com sucesso!")
 
-    except Exception as e:
-        print(str(e))
+            elif comando.startswith("adicionar"):
+                _, titulo, descricao, prioridade, status = comando.split(" ", 5)
+                sistema.adicionar_tarefa(titulo, descricao, int(prioridade), status)
+                print("✅ Tarefa adicionada com sucesso!")
+
+            elif comando == "listar":
+                print(sistema.listar_tarefas())
+
+            elif comando.startswith("editar"):
+                _, titulo, novo_titulo, nova_descricao, novo_prioridade, novo_status = comando.split(" ", 5)
+                sistema.editar_tarefa(titulo, novo_titulo, nova_descricao, int(novo_prioridade), novo_status)
+                print("✏️ Tarefa editada com sucesso!")
+
+            elif comando.startswith("remover"):
+                _, titulo = comando.split(" ", 1)
+                sistema.remover_tarefa(titulo)
+                print("🗑️ Tarefa removida com sucesso!")
+
+            elif comando == "salvar":
+                sistema.salvar_tarefas()
+                print("💾 Tarefas salvas em 'tarefas.json'.")
+
+            elif comando == "carregar":
+                sistema.carregar_tarefas()
+                print("📂 Tarefas carregadas de 'tarefas.json'.")
+
+            elif comando == "sair":
+                print("👋 Encerrando o sistema...")
+                break
+
+            else:
+                print("❓ Comando não reconhecido. Digite 'help' para ver os comandos.")
+
+        except Exception as e:
+            print(str(e))
