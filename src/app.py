@@ -1,4 +1,6 @@
-# Commit: feat: adicionar filtro de tarefas por status e prioridade
+# Commit: feat: adicionar persistência em arquivo (salvar e carregar tarefas)
+
+import json
 
 class Usuario:
     def __init__(self, nome, email, senha):
@@ -23,6 +25,18 @@ class Tarefa:
             self.prioridade = novo_prioridade
         if novo_status:
             self.status = novo_status
+
+    def to_dict(self):
+        return {
+            "titulo": self.titulo,
+            "descricao": self.descricao,
+            "prioridade": self.prioridade,
+            "status": self.status
+        }
+
+    @staticmethod
+    def from_dict(data):
+        return Tarefa(data["titulo"], data["descricao"], data["prioridade"], data["status"])
 
 
 class Sistema:
@@ -78,12 +92,18 @@ class Sistema:
             raise Exception(f"❌ Não foi possível remover: tarefa '{titulo}' não encontrada.")
         self.tarefas = [t for t in self.tarefas if t.titulo != titulo]
 
-    # ---------------- FILTROS ----------------
-    def filtrar_por_status(self, status):
-        return [(t.titulo, t.descricao, t.prioridade, t.status) for t in self.tarefas if t.status == status]
+    # ---------------- PERSISTÊNCIA ----------------
+    def salvar_tarefas(self, arquivo="tarefas.json"):
+        with open(arquivo, "w", encoding="utf-8") as f:
+            json.dump([t.to_dict() for t in self.tarefas], f, ensure_ascii=False, indent=4)
 
-    def filtrar_por_prioridade(self, prioridade):
-        return [(t.titulo, t.descricao, t.prioridade, t.status) for t in self.tarefas if t.prioridade == prioridade]
+    def carregar_tarefas(self, arquivo="tarefas.json"):
+        try:
+            with open(arquivo, "r", encoding="utf-8") as f:
+                dados = json.load(f)
+                self.tarefas = [Tarefa.from_dict(d) for d in dados]
+        except FileNotFoundError:
+            self.tarefas = []
 
 
 # -----------------------------
@@ -98,16 +118,17 @@ if __name__ == "__main__":
 
         sistema.adicionar_tarefa("Estudar UML", "Fazer diagrama de casos de uso", prioridade=2, status="pendente")
         sistema.adicionar_tarefa("Implementar login", "Criar autenticação básica", prioridade=1, status="em andamento")
-        sistema.adicionar_tarefa("Testar CRUD", "Rodar testes unitários", prioridade=3, status="concluída")
 
-        print("\n📌 Todas as tarefas:")
+        print("\n📌 Lista de tarefas antes de salvar:")
         print(sistema.listar_tarefas())
 
-        print("\n🔎 Tarefas pendentes:")
-        print(sistema.filtrar_por_status("pendente"))
+        sistema.salvar_tarefas()
 
-        print("\n🔎 Tarefas com prioridade 1:")
-        print(sistema.filtrar_por_prioridade(1))
+        # Simula novo sistema carregando tarefas
+        novo_sistema = Sistema()
+        novo_sistema.carregar_tarefas()
+        print("\n📂 Lista de tarefas carregadas do arquivo:")
+        print(novo_sistema.listar_tarefas())
 
     except Exception as e:
         print(str(e))
