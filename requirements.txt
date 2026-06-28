@@ -1,1 +1,5 @@
 pytest
+flask
+flask-cors
+pytest
+flake8
