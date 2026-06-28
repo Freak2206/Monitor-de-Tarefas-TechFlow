@@ -1,3 +1,5 @@
+# Commit: refactor: melhorar mensagens de erro
+
 class Usuario:
     def __init__(self, nome, email, senha):
         self.nome = nome
@@ -28,6 +30,8 @@ class Sistema:
 
     # ---------------- LOGIN ----------------
     def registrar_usuario(self, nome, email, senha):
+        if any(u.email == email for u in self.usuarios):
+            raise Exception(f"⚠️ Já existe um usuário registrado com o email: {email}")
         usuario = Usuario(nome, email, senha)
         self.usuarios.append(usuario)
         return usuario
@@ -37,20 +41,26 @@ class Sistema:
             if u.email == email and u.senha == senha:
                 self.usuario_logado = u
                 return True
-        return False
+        raise Exception("❌ Falha no login: email ou senha incorretos.")
 
     def logout(self):
+        if not self.usuario_logado:
+            raise Exception("⚠️ Nenhum usuário está logado no momento.")
         self.usuario_logado = None
 
     # ---------------- CRUD ----------------
     def adicionar_tarefa(self, titulo, descricao, prioridade=0):
         if not self.usuario_logado:
-            raise Exception("É necessário estar logado para adicionar tarefas.")
+            raise Exception("🚫 É necessário estar logado para adicionar tarefas.")
+        if any(t.titulo == titulo for t in self.tarefas):
+            raise Exception(f"⚠️ Já existe uma tarefa com o título: {titulo}")
         tarefa = Tarefa(titulo, descricao, prioridade)
         self.tarefas.append(tarefa)
         return tarefa
 
     def listar_tarefas(self):
+        if not self.tarefas:
+            raise Exception("📭 Nenhuma tarefa encontrada.")
         return [(t.titulo, t.descricao, t.prioridade) for t in self.tarefas]
 
     def editar_tarefa(self, titulo, novo_titulo=None, nova_descricao=None, novo_prioridade=None):
@@ -58,9 +68,11 @@ class Sistema:
             if t.titulo == titulo:
                 t.editar(novo_titulo, nova_descricao, novo_prioridade)
                 return t
-        return None
+        raise Exception(f"❌ Não foi possível editar: tarefa '{titulo}' não encontrada.")
 
     def remover_tarefa(self, titulo):
+        if not any(t.titulo == titulo for t in self.tarefas):
+            raise Exception(f"❌ Não foi possível remover: tarefa '{titulo}' não encontrada.")
         self.tarefas = [t for t in self.tarefas if t.titulo != titulo]
 
 
@@ -70,30 +82,23 @@ class Sistema:
 if __name__ == "__main__":
     sistema = Sistema()
 
-    # Registrar e logar usuário
-    sistema.registrar_usuario("Felipe", "felipe@email.com", "1234")
-    login_ok = sistema.login("felipe@email.com", "1234")
+    try:
+        sistema.registrar_usuario("Felipe", "felipe@email.com", "1234")
+        sistema.login("felipe@email.com", "1234")
 
-    if login_ok:
-        print("✅ Login realizado com sucesso!")
-
-        # Criar tarefas
         sistema.adicionar_tarefa("Estudar UML", "Fazer diagrama de casos de uso", prioridade=2)
-        sistema.adicionar_tarefa("Implementar login", "Criar autenticação básica", prioridade=1)
+        print("✅ Tarefa adicionada com sucesso!")
 
-        print("\n📌 Lista inicial de tarefas:")
+        print("\n📌 Lista de tarefas:")
         print(sistema.listar_tarefas())
 
-        # Editar tarefa
         sistema.editar_tarefa("Estudar UML", nova_descricao="Fazer diagrama de classes", novo_prioridade=3)
-
-        print("\n✏️ Após edição da tarefa:")
+        print("\n✏️ Tarefa editada com sucesso!")
         print(sistema.listar_tarefas())
 
-        # Remover tarefa
-        sistema.remover_tarefa("Implementar login")
-
-        print("\n🗑️ Após remover tarefa:")
+        sistema.remover_tarefa("Estudar UML")
+        print("\n🗑️ Tarefa removida com sucesso!")
         print(sistema.listar_tarefas())
-    else:
-        print("❌ Falha no login!")
+
+    except Exception as e:
+        print(str(e))
