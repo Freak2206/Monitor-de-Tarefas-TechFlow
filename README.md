@@ -2,6 +2,7 @@
 
 ![CI](https://github.com/Freak2206/Monitor-de-Tarefas-TechFlow/actions/workflows/ci.yml/badge.svg)
 
+
  Visão Geral
 O TechFlow é um sistema de gerenciamento de tarefas desenvolvido em Flask com interface única em Bootstrap, permitindo registro, login e CRUD completo de tarefas. O projeto segue práticas ágeis e inclui testes automatizados e pipeline de integração contínua.
 
