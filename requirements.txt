@@ -1,5 +1,5 @@
-pytest
 flask
-flask-cors
 pytest
+flask-wtf
+flask-sqlalchemy
 flake8
