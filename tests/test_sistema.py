@@ -1,4 +1,4 @@
-from sistema_class import Sistema
+from src.sistema_class import Sistema
 import pytest
 import sys
 import os

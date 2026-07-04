@@ -28,7 +28,7 @@ jobs:
         pip install -r requirements.txt
 
     - name: Rodar testes
-      run: pytest
+      run: python -m pytest
 
     - name: Checar estilo com Flake8
       run: flake8 src tests
