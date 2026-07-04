@@ -1,118 +1,118 @@
-# Monitor-de-Tarefas-TechFlow
-# Construindo um Projeto Ágil no GitHub: Da Gestão ao Controle de Qualidade
+TechFlow - Sistema de Tarefas
 
-Este projeto foi desenvolvido como parte da atividade da disciplina de Engenharia de Software da UniFECAF.  
-A empresa fictícia **TechFlow Solutions** foi contratada para criar um sistema de gerenciamento de tarefas com foco em práticas ágeis, testes automatizados e qualidade de software.
+ Visão Geral
 
----
+O TechFlow é um sistema de gerenciamento de tarefas desenvolvido em Flask com interface única em Bootstrap, permitindo registro, login e CRUD completo de tarefas. O projeto segue práticas ágeis e inclui testes automatizados e pipeline de integração contínua.
 
-##  Funcionalidades Implementadas
+ Como executar o projeto
 
-### Commit 1 — *feat: criar estrutura inicial do projeto*
-- Criação da pasta `src/` e arquivo `app.py`.
-- Classe `Sistema` com estrutura básica.
+Clone o repositório:
 
-### Commit 2 — *feat: adicionar CRUD de tarefas*
-- Implementação das operações de adicionar, listar, editar e remover tarefas.
+git clone https://github.com/seuusuario/techflow.git
+cd techflow
 
-### Commit 3 — *test: adicionar testes para CRUD*
-- Arquivo `tests/test_app.py` com testes unitários para o CRUD.
+Crie e ative um ambiente virtual:
 
-### Commit 4 — *test: adicionar testes para login*
-- Arquivo `tests/test_login.py` validando login, logout e bloqueio de CRUD sem login.
+python -m venv venv
+source venv/bin/activate   # Linux/Mac
+venv\Scripts\activate      # Windows
 
-### Commit 5 — *refactor: melhorar mensagens de erro*
-- Mensagens de erro mais claras e amigáveis.
-- Validações adicionais: email duplicado, título duplicado de tarefa.
-
-### Commit 6 — *feat: adicionar prioridade e status às tarefas*
-- Cada tarefa possui prioridade e status (pendente, em andamento, concluída).
-
-### Commit 7 — *feat: adicionar filtro de tarefas por status e prioridade*
-- Métodos para filtrar tarefas por status ou prioridade.
-
-### Commit 8 — *feat: adicionar persistência em arquivo (salvar e carregar tarefas)*
-- Salvamento das tarefas em `tarefas.json`.
-- Carregamento automático das tarefas ao reiniciar o sistema.
-
-### Commit 9 — *feat: adicionar interface de linha de comando (CLI)*
-- Interação via terminal com comandos como `adicionar`, `listar`, `editar`, `remover`, `salvar`, `carregar`.
-
-### Commit 10 — *test: adicionar testes automatizados para a CLI*
-- Arquivo `tests/test_cli.py` simulando comandos e validando saídas da CLI.
-
-### Commit 11 — *feat: adicionar interface gráfica simples (GUI com Tkinter)*
-- Arquivo `src/gui.py` com interface gráfica para login e gerenciamento de tarefas.
-
-### Commit 12 — *test: adicionar testes automatizados para a GUI*
-- Arquivo `tests/test_gui.py` validando login e adicionar tarefas via GUI.
-
-### Commit 13 — *feat: documentação do projeto (README detalhado)*
-- Criação deste README com histórico dos commits e funcionalidades.
-
----
-
-##  Tecnologias Utilizadas
-- **Python 3.13**
-- **Pytest** para testes automatizados
-- **Tkinter** para GUI
-- **JSON** para persistência de dados
-- **Git/GitHub** para versionamento e colaboração
-
----
-
-## 📂 Estrutura do Projeto
-TECHFLOW/
-│
-├── src/
-│   ├── app.py        # Lógica principal do sistema
-│   └── gui.py        # Interface gráfica (Tkinter)
-│
-├── tests/
-│   ├── test_app.py   # Testes do CRUD
-│   ├── test_login.py # Testes de login/logout
-│   ├── test_cli.py   # Testes da CLI
-│   └── test_gui.py   # Testes da GUI
-│
-├── tarefas.json      # Persistência das tarefas
-└── README.md         # Documentação do projeto
-
-Código
-
----
-
-##  Como Executar
-1. Clone o repositório:
-   ```bash
-   git clone <url-do-repo>
-   cd TECHFLOW
 Instale as dependências:
 
-bash
-python -m pip install pytest
-Execute os testes:
+pip install -r requirements.txt
 
-bash
-python -m pytest -v
-Rode a CLI:
+Execute o servidor Flask:
 
-bash
-python src/app.py
-Rode a GUI:
+flask run
 
-bash
-python src/gui.py
+Acesse no navegador:
+
+http://127.0.0.1:5000
+
+ Testes Automatizados
+
+Os testes foram implementados com Pytest e estão localizados na pasta tests/.
+
+Rodando os testes localmente
+
+pytest
+
+Estrutura de testes
+
+Registro e login de usuários
+
+Adição de tarefas
+
+Edição de tarefas
+
+Remoção de tarefas
+
+ Integração Contínua (CI/CD)
+
+O projeto utiliza GitHub Actions para rodar testes e validar qualidade a cada push.
+
+Pipeline configurado em .github/workflows/ci.yml
+
+Instala dependências
+
+Executa testes com Pytest
+
+Valida qualidade do código com Flake8
+
+Resultado:
+
+✅ Se tudo passar, aparece verde na aba Actions
+
+❌ Se falhar, aparece vermelho com log detalhado
+
+ Commits Semânticos
+
+O projeto segue o padrão Conventional Commits:
+
+feat: nova funcionalidade
+
+fix: correção de bug
+
+refactor: melhoria sem alterar comportamento
+
+docs: mudanças em documentação
+
+test: criação ou alteração de testes
+
+ci: configuração de integração contínua
+
+Exemplo de histórico:
+
+feat: implementar modal de edição de tarefas
+
+fix: corrigir variável sistema não definida
+
+test: adicionar testes para login e CRUD
+
+ci: configurar pipeline GitHub Actions
+
+ Mudança de Escopo Simulada
+
+Durante o desenvolvimento, foi simulada uma mudança de escopo:
+
+Novo card no Kanban: "Adicionar filtro de status nas tarefas"
+
+Commit semântico: feat: adicionar filtro de status nas tarefas
+
+Implementação: inclusão de um campo select para filtrar tarefas por status
+
+Documentação: este README foi atualizado para registrar a mudança
+
+Essa prática demonstra adaptação ágil e registro transparente de alterações.
+
  Conclusão
-Este projeto demonstra a aplicação de práticas ágeis, versionamento semântico de commits e integração de testes automatizados em diferentes camadas (CRUD, login, CLI e GUI).
-A documentação garante rastreabilidade das alterações conforme solicitado na atividade.
 
-Código
+O TechFlow cumpre os requisitos do trabalho:
 
----
+Commits semânticos e frequentes
 
-##  Comandos Git para subir o commit
+Testes automatizados com Pytest
 
-```bash
-git add README.md
-git commit -m "feat: documentação do projeto (README detalhado)"
-git push origin main
+Pipeline CI/CD com GitHub Actions
+
+Simulação de mudança de escopo documentada
