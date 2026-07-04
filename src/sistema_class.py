@@ -5,7 +5,9 @@ class Sistema:
         self.tarefas = []
 
     def registrar_usuario(self, nome, email, senha):
-        self.usuarios.append({"nome": nome, "email": email, "senha": senha})
+        self.usuarios.append(
+            {"nome": nome, "email": email, "senha": senha}
+        )
 
     def login(self, email, senha):
         for u in self.usuarios:
@@ -14,14 +16,20 @@ class Sistema:
                 return True
         return False
 
-    def adicionar_tarefa(self, titulo, descricao, prioridade, status):
+    def adicionar_tarefa(
+        self, titulo, descricao, prioridade, status
+    ):
         self.tarefas.append(
             {
                 "titulo": titulo,
                 "descricao": descricao,
                 "prioridade": prioridade,
                 "status": status,
-                "autor": self.usuario_logado.email if self.usuario_logado else None,
+                "autor": (
+                    self.usuario_logado.email
+                    if self.usuario_logado
+                    else None
+                ),
             }
         )
 
@@ -29,7 +37,12 @@ class Sistema:
         return self.tarefas
 
     def editar_tarefa(
-        self, titulo_antigo, novo_titulo, nova_desc, nova_prioridade, novo_status
+        self,
+        titulo_antigo,
+        novo_titulo,
+        nova_desc,
+        nova_prioridade,
+        novo_status,
     ):
         for t in self.tarefas:
             if t["titulo"] == titulo_antigo:
@@ -39,4 +52,6 @@ class Sistema:
                 t["status"] = novo_status
 
     def remover_tarefa(self, titulo):
-        self.tarefas = [t for t in self.tarefas if t["titulo"] != titulo]
+        self.tarefas = [
+            t for t in self.tarefas if t["titulo"] != titulo
+        ]
