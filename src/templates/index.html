@@ -1,82 +1,88 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <title>TechFlow - Sistema de Tarefas</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <meta charset="UTF-8">
+  <title>TechFlow - Sistema de Tarefas</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
-<body class="container mt-4">
+<body class="bg-dark text-light">
+  <div class="container mt-4">
+    <h1 class="text-warning">TechFlow - Sistema de Tarefas</h1>
 
-    <h1 class="mb-4">Gerenciamento de Tarefas</h1>
+    <!-- Login / Logout -->
+    {% if not usuario %}
+      <p>Você não está logado. <a href="/login" class="btn btn-sm btn-warning">Entrar</a> ou <a href="/register" class="btn btn-sm btn-info">Registrar</a></p>
+    {% else %}
+      <p>Logado como <strong>{{ usuario }}</strong> 
+         <a href="/logout" class="btn btn-sm btn-outline-light">Sair</a></p>
+    {% endif %}
 
-    <!-- Filtro de status -->
-    <form method="GET" action="/" class="mb-3">
-        <label for="status" class="form-label">Filtrar por status:</label>
-        <select name="status" id="status" class="form-select" onchange="this.form.submit()">
-            <option value="">Todos</option>
-            <option value="Pendente" {% if request.args.get('status') == 'Pendente' %}selected{% endif %}>Pendente</option>
-            <option value="Concluída" {% if request.args.get('status') == 'Concluída' %}selected{% endif %}>Concluída</option>
-        </select>
-    </form>
+    <!-- Botão adicionar -->
+    {% if usuario %}
+      <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#novaTarefa">
+        + Adicionar Tarefa
+      </button>
+    {% endif %}
 
-    <!-- Lista de tarefas -->
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Título</th>
-                <th>Descrição</th>
-                <th>Prioridade</th>
-                <th>Status</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for tarefa in tarefas %}
-            <tr>
-                <td>{{ tarefa["titulo"] }}</td>
-                <td>{{ tarefa["descricao"] }}</td>
-                <td>{{ tarefa["prioridade"] }}</td>
-                <td>{{ tarefa["status"] }}</td>
-                <td>
-                    <!-- Botões de ação -->
-                    <form method="POST" action="/remover" style="display:inline;">
-                        <input type="hidden" name="titulo" value="{{ tarefa['titulo'] }}">
-                        <button type="submit" class="btn btn-danger btn-sm">Remover</button>
-                    </form>
-                    <form method="POST" action="/editar" style="display:inline;">
-                        <input type="hidden" name="titulo" value="{{ tarefa['titulo'] }}">
-                        <button type="submit" class="btn btn-warning btn-sm">Editar</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
+    <!-- Tabela -->
+    <table class="table table-dark table-striped">
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Descrição</th>
+          <th>Prioridade</th>
+          <th>Status</th>
+          <th>Autor</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for t in tarefas %}
+        <tr>
+          <td>{{ t.titulo }}</td>
+          <td>{{ t.descricao }}</td>
+          <td>{{ t.prioridade }}</td>
+          <td>{{ t.status }}</td>
+          <td>{{ t.autor }}</td>
+          <td>
+            <form method="post" action="/editar/{{ t.titulo }}" class="d-inline">
+              <input type="hidden" name="titulo" value="{{ t.titulo }}">
+              <input type="hidden" name="descricao" value="{{ t.descricao }}">
+              <input type="hidden" name="prioridade" value="{{ t.prioridade }}">
+              <input type="hidden" name="status" value="{{ t.status }}">
+              <button class="btn btn-warning btn-sm">Editar</button>
+            </form>
+            <a href="/concluir/{{ t.titulo }}" class="btn btn-success btn-sm">Concluir</a>
+            <a href="/remover/{{ t.titulo }}" class="btn btn-danger btn-sm">Remover</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
     </table>
+  </div>
 
-    <!-- Formulário de adicionar tarefa -->
-    <h2 class="mt-4">Adicionar Tarefa</h2>
-    <form method="POST" action="/adicionar">
-        <div class="mb-2">
-            <input type="text" name="titulo" placeholder="Título" class="form-control" required>
+  <!-- Modal Nova Tarefa -->
+  <div class="modal fade" id="novaTarefa" tabindex="-1">
+    <div class="modal-dialog">
+      <form method="post" action="/tasks" class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Nova Tarefa</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
-        <div class="mb-2">
-            <input type="text" name="descricao" placeholder="Descrição" class="form-control" required>
+        <div class="modal-body">
+          <input type="text" name="titulo" class="form-control mb-2" placeholder="Título" required>
+          <input type="text" name="descricao" class="form-control mb-2" placeholder="Descrição" required>
+          <input type="text" name="prioridade" class="form-control mb-2" placeholder="Prioridade" required>
+          <input type="text" name="status" class="form-control mb-2" placeholder="Status" required>
         </div>
-        <div class="mb-2">
-            <select name="prioridade" class="form-select">
-                <option>Alta</option>
-                <option>Média</option>
-                <option>Baixa</option>
-            </select>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Salvar</button>
         </div>
-        <div class="mb-2">
-            <select name="status" class="form-select">
-                <option>Pendente</option>
-                <option>Concluída</option>
-            </select>
-        </div>
-        <button type="submit" class="btn btn-primary">Adicionar</button>
-    </form>
+      </form>
+    </div>
+  </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
