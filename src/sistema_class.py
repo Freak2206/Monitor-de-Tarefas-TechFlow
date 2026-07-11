@@ -9,8 +9,9 @@ class Tarefa:
 class Sistema:
     def __init__(self):
         self.tarefas = []
+        self.usuarios = []
+        self.usuario_logado = None
 
-<<<<<<< HEAD
     def registrar_usuario(self, nome, email, senha):
         self.usuarios.append(
             {"nome": nome, "email": email, "senha": senha}
@@ -24,48 +25,16 @@ class Sistema:
         return False
 
     def adicionar_tarefa(
-        self, titulo, descricao, prioridade, status
+        self, titulo, descricao, prioridade, status, autor=None
     ):
-        self.tarefas.append(
-            {
-                "titulo": titulo,
-                "descricao": descricao,
-                "prioridade": prioridade,
-                "status": status,
-                "autor": (
-                    self.usuario_logado.email
-                    if self.usuario_logado
-                    else None
-                ),
-            }
-        )
+        if autor is None and self.usuario_logado:
+            autor = self.usuario_logado.email
+        
+        tarefa = Tarefa(titulo, descricao, prioridade, status, autor)
+        self.tarefas.append(tarefa)
 
     def listar_tarefas(self):
         return self.tarefas
-
-    def editar_tarefa(
-        self,
-        titulo_antigo,
-        novo_titulo,
-        nova_desc,
-        nova_prioridade,
-        novo_status,
-    ):
-        for t in self.tarefas:
-            if t["titulo"] == titulo_antigo:
-                t["titulo"] = novo_titulo
-                t["descricao"] = nova_desc
-                t["prioridade"] = nova_prioridade
-                t["status"] = novo_status
-
-    def remover_tarefa(self, titulo):
-        self.tarefas = [
-            t for t in self.tarefas if t["titulo"] != titulo
-        ]
-=======
-    def adicionar_tarefa(self, titulo, descricao, prioridade, status, autor):
-        tarefa = Tarefa(titulo, descricao, prioridade, status, autor)
-        self.tarefas.append(tarefa)
 
     def remover_tarefa(self, titulo):
         self.tarefas = [t for t in self.tarefas if t.titulo != titulo]
@@ -82,4 +51,3 @@ class Sistema:
                 t.descricao = nova_descricao
                 t.prioridade = nova_prioridade
                 t.status = novo_status
->>>>>>> 1b9edfc (commit final: ajustes no app.py, sistema_class.py e templates (index, login, register) para fluxo completo de login, registro e gerenciamento de tarefas)
