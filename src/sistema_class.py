@@ -12,6 +12,7 @@ class Tarefa:
     def __setitem__(self, key, value):
         setattr(self, key, value)
 
+
 class Sistema:
     def __init__(self):
         self.tarefas = []
@@ -35,7 +36,7 @@ class Sistema:
     ):
         if autor is None and self.usuario_logado:
             autor = self.usuario_logado.email
-        
+
         tarefa = Tarefa(titulo, descricao, prioridade, status, autor)
         self.tarefas.append(tarefa)
 
@@ -50,7 +51,10 @@ class Sistema:
             if t.titulo == titulo:
                 t.status = "concluída"
 
-    def editar_tarefa(self, titulo_antigo, novo_titulo, nova_descricao, nova_prioridade, novo_status):
+    def editar_tarefa(
+        self, titulo_antigo, novo_titulo, nova_descricao,
+        nova_prioridade, novo_status
+    ):
         for t in self.tarefas:
             if t.titulo == titulo_antigo:
                 t.titulo = novo_titulo
