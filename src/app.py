@@ -1,11 +1,12 @@
+import logging
 from flask import Flask, render_template, request, redirect, session
 from src.sistema_class import Sistema
+
+logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 app.secret_key = "chave-secreta-super-segura"
 app.config["PROPAGATE_EXCEPTIONS"] = True
-import logging
-logging.basicConfig(level=logging.DEBUG)
 
 
 # Instância do sistema
@@ -107,6 +108,7 @@ def editar(titulo):
 def logout():
     session.pop("usuario", None)
     return redirect("/login")
+
 
 if __name__ == "__main__":
     app.run(debug=True)
