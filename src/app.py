@@ -2,7 +2,8 @@ from flask import Flask, render_template, request, redirect, session
 from src.sistema_class import Sistema
 
 app = Flask(__name__)
-app.secret_key = "chave-super-secreta-techflow"  # chave fixa para manter a sessão
+app.secret_key = "chave-super-secreta-techflow"
+# Chave fixa para manter a sessão
 
 # Instância do sistema
 sistema = Sistema()
@@ -60,7 +61,9 @@ def criar_tarefa():
     descricao = request.form.get("descricao")
     prioridade = request.form.get("prioridade")
     autor = session.get("usuario")
-    sistema.adicionar_tarefa(titulo, descricao, prioridade, "pendente", autor)
+    sistema.adicionar_tarefa(
+        titulo, descricao, prioridade, "pendente", autor
+    )
     return redirect("/")
 
 
