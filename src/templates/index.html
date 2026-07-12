@@ -11,7 +11,10 @@
 
     <!-- Login / Logout -->
     {% if not usuario %}
-      <p>Você não está logado. <a href="/login" class="btn btn-sm btn-warning">Entrar</a> ou <a href="/register" class="btn btn-sm btn-info">Registrar</a></p>
+      <p>Você não está logado. 
+        <a href="/login" class="btn btn-sm btn-warning">Entrar</a> 
+        ou <a href="/register" class="btn btn-sm btn-info">Registrar</a>
+      </p>
     {% else %}
       <p>Logado como <strong>{{ usuario }}</strong> 
          <a href="/logout" class="btn btn-sm btn-outline-light">Sair</a></p>
@@ -45,6 +48,7 @@
           <td>{{ t.status }}</td>
           <td>{{ t.autor }}</td>
           <td>
+            <!-- Editar -->
             <form method="post" action="/editar/{{ t.titulo }}" class="d-inline">
               <input type="hidden" name="titulo" value="{{ t.titulo }}">
               <input type="hidden" name="descricao" value="{{ t.descricao }}">
@@ -52,7 +56,9 @@
               <input type="hidden" name="status" value="{{ t.status }}">
               <button class="btn btn-warning btn-sm">Editar</button>
             </form>
+            <!-- Concluir -->
             <a href="/concluir/{{ t.titulo }}" class="btn btn-success btn-sm">Concluir</a>
+            <!-- Remover -->
             <a href="/remover/{{ t.titulo }}" class="btn btn-danger btn-sm">Remover</a>
           </td>
         </tr>
@@ -64,7 +70,8 @@
   <!-- Modal Nova Tarefa -->
   <div class="modal fade" id="novaTarefa" tabindex="-1">
     <div class="modal-dialog">
-      <form method="post" action="/tasks" class="modal-content">
+      <!-- Corrigido: agora aponta para /criar -->
+      <form method="post" action="/criar" class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Nova Tarefa</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
