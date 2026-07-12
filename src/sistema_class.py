@@ -4,6 +4,7 @@ class Usuario:
         self.email = email
         self.senha = senha
 
+
 class Tarefa:
     def __init__(self, titulo, descricao, prioridade, status, autor):
         self.titulo = titulo
@@ -11,6 +12,7 @@ class Tarefa:
         self.prioridade = prioridade
         self.status = status
         self.autor = autor
+
 
 class Sistema:
     def __init__(self):
@@ -32,7 +34,10 @@ class Sistema:
     def adicionar_tarefa(self, titulo, descricao, prioridade, status):
         if self.usuario_logado is None:
             raise Exception("Usuário não está logado")
-        tarefa = Tarefa(titulo, descricao, prioridade, status, self.usuario_logado.nome)
+        tarefa = Tarefa(
+            titulo, descricao, prioridade, status,
+            self.usuario_logado.nome
+        )
         self.tarefas.append(tarefa)
 
     def remover_tarefa(self, titulo):
@@ -43,7 +48,10 @@ class Sistema:
             if t.titulo == titulo:
                 t.status = "concluída"
 
-    def editar_tarefa(self, titulo_antigo, novo_titulo, nova_descricao, nova_prioridade, novo_status):
+    def editar_tarefa(
+        self, titulo_antigo, novo_titulo, nova_descricao,
+        nova_prioridade, novo_status
+    ):
         for t in self.tarefas:
             if t.titulo == titulo_antigo:
                 t.titulo = novo_titulo
@@ -52,4 +60,13 @@ class Sistema:
                 t.status = novo_status
 
     def listar_tarefas(self):
-        return [{"titulo": t.titulo, "descricao": t.descricao, "prioridade": t.prioridade, "status": t.status, "autor": t.autor} for t in self.tarefas]
+        return [
+            {
+                "titulo": t.titulo,
+                "descricao": t.descricao,
+                "prioridade": t.prioridade,
+                "status": t.status,
+                "autor": t.autor
+            }
+            for t in self.tarefas
+        ]
